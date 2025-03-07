@@ -8,7 +8,10 @@ export default function QuizCard({ quiz, userSelectedOption }) {
     return <div>No quiz data available</div>;
   }
 
-
+  const handleOptionClick = (option) => {
+    setSelectedOption(option);
+    userSelectedOption(option);
+  };
 
   return (
     <div className="p-4 bg-white border rounded-lg shadow-md">
@@ -17,10 +20,7 @@ export default function QuizCard({ quiz, userSelectedOption }) {
         {quiz.options.map((option, index) => (
           <button
             key={index}
-            onClick={() => {
-              setSelectedOption(option);
-    userSelectedOption(option);
-            }}
+            onClick={() => handleOptionClick(option)}
             className={`p-2 h-20 rounded-lg hover:bg-gray-300 ${
               selectedOption === option ? 'bg-blue-500 text-white' : 'bg-gray-200'
             }`}

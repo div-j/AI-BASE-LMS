@@ -9,7 +9,6 @@ import { eq } from "drizzle-orm";
 import { inngest } from "./client";
 import {
   generateNotesAiModel,
-  GenerateQuizAimodel,
   GenerateStudyTypeContentAiModel,
 } from "@/config/AiModel";
 
@@ -90,9 +89,9 @@ export const GenerateNotes = inngest.createFunction(
         const Chapters = course?.courseLayout?.chapters;
         let index = 0;
         for (const chapter of Chapters) {
-          const PROMPT = `Generate just the html study material, for each topic in the chapters for learning, in nice html format with tailwind classNames including color styling (white,blue, black and red)  (do not add HTML, Head, Body, title tag), the chapters: ${JSON.stringify(
+          const PROMPT = `Generate exam material detail for each chapter, make sure to include all the topics in the content, make sure to give content in html format (do not add HTML, Head, Body, title tag), the chapters: ${JSON.stringify(
             chapter
-          )} Note: all must bein html only and noting should be json`;
+          )}`;
           const result = await generateNotesAiModel.sendMessage(PROMPT);
           const aiResp = await result.response.text();
           const insertResult = await db.insert(NotechaptersTable).values({
@@ -105,8 +104,8 @@ export const GenerateNotes = inngest.createFunction(
         }
         return { message: "Notes Generated" };
       } catch (error) {
-        console.log("Error generating notes:", error.message);
-        return { error: error.message };
+        console.log(error.message);
+        // return { error: error.message };
       }
     });
 
@@ -126,7 +125,7 @@ export const GenerateNotes = inngest.createFunction(
         }
       );
     } catch (error) {
-      console.log("Error updating course status:", error.message);
+      console.log(error.message);
     }
 
     return { notes: notesResult };
@@ -143,16 +142,14 @@ export const GenerateStudyTypeContent = inngest.createFunction(
     //Get event data
     const { studyType, prompt, courseId, recordId } = event.data;
 
-    const MainResult = await step.run(
-      "Generate content using AI ",
+    const flashCardResult = await step.run(
+      "Generate flash card using AI ",
       async () => {
         try {
-          const result = studyType === "Flashcard"
-            ? await GenerateStudyTypeContentAiModel.sendMessage(prompt)
-            : await GenerateQuizAimodel.sendMessage(prompt);
-
+          const result = await GenerateStudyTypeContentAiModel.sendMessage(
+            prompt
+          );
           const AiResult = JSON.parse(result.response.text());
-          console.log("Generated Content:", AiResult); // Log generated content
           return AiResult;
         } catch (error) {
           console.log(error.message);
@@ -162,15 +159,15 @@ export const GenerateStudyTypeContent = inngest.createFunction(
     //save the result
 
     try {
-      const dbResult = await step.run("Save the result to DB", async () => {
+      const dbReult = await step.run("Save the result to DB", async () => {
         const result = await db
           .update(studyContentTypeTable)
           .set({
-            content: MainResult,
+            content: flashCardResult,
             status: "Ready",
           })
           .where(eq(studyContentTypeTable.id, recordId));
-        console.log("Saved Content to DB:", result); // Log saved content
+
         return { message: "success" };
       });
     } catch (error) {

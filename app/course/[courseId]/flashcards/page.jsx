@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/carousel";
 import { Loader2 } from "lucide-react";
 
-const ProgressStep = dynamic(() => import("./_components/ProgressStep").then(mod => mod.default), { ssr: false });
+const ProgressStep = dynamic(() => import("./_components/ProgressStep"), { ssr: false });
 
 export default function FlashCard() {
   const [flashcards, setFlashcards] = useState([]);

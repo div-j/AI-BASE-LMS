@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
 import axios from 'axios';
 import { useParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import ProgressStep from '../_components/ProgressStep';
 import QuizCard from './_components/QuizCard';
 import { LoaderPinwheel } from 'lucide-react';
@@ -23,7 +23,9 @@ export default function Quiz() {
 
     console.log("Quiz studymaterial", result);
     setQuizData(result?.data);
-    setQuizQuestions(result?.data?.content?.questions || []);
+    setQuizQuestions(result?.data?.questions || []);
+    console.log("Quiz ", quizQuestions);
+
   }
 
   const checkAnswer = (userAnswer, currentQuestion) => {
@@ -47,14 +49,13 @@ export default function Quiz() {
 
   if (!quizData) {
     return <div className='flex items-center h-screen justify-center'>
-      <LoaderPinwheel size={24} />
-      </div>;
-    
+      <LoaderPinwheel className='animate-spin'  size={24} />
+    </div>;
   }
 
   return (
     <div className="space-y-10">
-      <h2 className='font-bold text-2xl text-center mt-5'>Quiz</h2>
+      <h2 className='font-bold text-2xl text-center mt-5'>{quizData.quizTitle}</h2>
       <ProgressStep data={quizQuestions} count={step} setCount={setStep} />
       {/* Render quiz questions here */}
       {quizQuestions.length > 0 && (
@@ -68,7 +69,7 @@ export default function Quiz() {
             </div>
           ) : (
             <div className='bg-red-200 border border-red-700 p-2 rounded-lg text-center'>
-              <p className='font-bold  text-red-600 text-lg'>Incorrect Answer</p>
+              <p className='font-bold text-red-600 text-lg'>Incorrect Answer</p>
               <p className='text-red-600'>Correct Answer is: <span className="font-semibold">{answer}</span></p>
             </div>
           )

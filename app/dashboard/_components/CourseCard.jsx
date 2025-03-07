@@ -4,8 +4,7 @@ import { RefreshCcw } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-
-const Button = dynamic(() => import("@/components/ui/button").then(mod => mod.Button), { ssr: false });
+import { Button } from "@/components/ui/button";
 
 export default function CourseCard({ course }) {
   return (
