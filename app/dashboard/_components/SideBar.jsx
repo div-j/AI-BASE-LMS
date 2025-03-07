@@ -35,7 +35,7 @@ export default function SideBar() {
     <div className="h-screen shadow-md p-5">
       <section className="flex gap-2 items-center">
         <Image src={"logo.svg"} alt="logo" width={40} height={40} />
-        <h2 className="w-full text-2xl">Easy Study</h2>
+        <h2 className="w-full text-2xl"></h2>
       </section>
       <section className="mt-10">
         <Link href="/create">

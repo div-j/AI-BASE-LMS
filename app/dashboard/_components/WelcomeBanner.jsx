@@ -11,7 +11,7 @@ export default function WelcomeBanner() {
         <Image src={"/laptop.png"} alt="laptop" width={100} height={100} />
         <div>
           <h1 className="text-3xl font-bold capitalize">Hello {user?.fullName}</h1>
-          <p className="text-sm">Welcome Back, Tt's time to get back tot learning new course</p>
+          <p className="text-sm">Welcome Back, It's time to get back to learning new course</p>
         </div>
       </div>
     </div>
