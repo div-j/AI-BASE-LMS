@@ -22,7 +22,7 @@ export async function POST(req) {
 
       const result = {
         notes: notes,
-        flashcard: contentList?.find(item => item?.type === "Flashcard")?.content || [],
+        flashcard: contentList?.find(item => item?.type === "Flashcards")?.content || [],
         quiz: contentList?.find(item => item?.type === "Quiz")?.content || [],
         qa: contentList?.find(item => item?.type === "QA")?.content || []
       };

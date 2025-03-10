@@ -11,7 +11,7 @@ export async function POST(req) {
       return NextResponse.json({ error: 'courseId is required' }, { status: 400 });
     }
 
-    const PROMPT = type === "Flashcard"
+    const PROMPT = type === "Flashcards"
       ? `Generate the flashcard on topic: ${chapters} in JSON format with front-back content, maximum 15.`
       : `Generate Quiz on topic ${chapters} with Questions and Options along with correct answer in JSON format max(10).`;
 

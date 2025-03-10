@@ -134,45 +134,45 @@ export const GenerateNotes = inngest.createFunction(
 );
 
 export const GenerateStudyTypeContent = inngest.createFunction(
-  // config
   { id: "Generate Study Type Content" },
-  // trigger (event or cron)
   { event: "studyType.content" },
-  // handler function
   async ({ event, step }) => {
-    //Get event data
     const { studyType, prompt, courseId, recordId } = event.data;
 
-    const AiResult = await step.run(
-      "Generate flash card using AI ",
-      async () => {
-        try {
-          const result = 
-          studyType === "FlashCard"?
-          await GenerateStudyTypeContentAiModel.sendMessage(prompt):
-          await GenerateQuizAimodel.sendMessage(prompt);
-          const AIResult = JSON.parse(result.response.text());
-          return AIResult;
-        } catch (error) {
-          console.log(error.message);
+    const AiResult = await step.run("Generate content using AI", async () => {
+      try {
+        let result;
+        if (studyType.toLowerCase() === "flashcards") {
+          // Generate flashcards
+          result = await GenerateStudyTypeContentAiModel.sendMessage(prompt);
+        } else if (studyType.toLowerCase() === "quiz") {
+          // Generate quiz
+          result = await GenerateQuizAimodel.sendMessage(prompt);
+        } else {
+          throw new Error("Invalid study type");
         }
+        return JSON.parse(result.response.text());
+      } catch (error) {
+        console.error("Error generating content:", error.message);
+        throw error;
       }
-    );
-    //save the result
+    });
 
+    // Save the result to the database
     try {
-      const dbReult = await step.run("Save the result to DB", async () => {
-        const result = await db.update(studyContentTypeTable)
+      await step.run("Save the result to DB", async () => {
+        await db
+          .update(studyContentTypeTable)
           .set({
             content: AiResult,
             status: "Ready",
           })
           .where(eq(studyContentTypeTable.id, recordId));
-
-        return { message: "success", result: result };
+        return { message: "success" };
       });
     } catch (error) {
-      console.log(error.message);
+      console.error("Error saving to DB:", error.message);
+      throw error;
     }
   }
 );

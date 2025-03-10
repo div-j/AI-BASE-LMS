@@ -13,7 +13,7 @@ const  [selectedOption, setSelectedOption] = React.useState(null);
             quiz?.options.map((option, index) => (
               <h2 className={`font-medium text-lg text-center w-full rounded-full border p-3 hover:bg-gray-200 cursor-pointer
                
-                ${selectedOption === option ? 'bg-primary text-whit hover:bg-primary' : ''}
+                ${selectedOption === option ? 'bg-primary text-white hover:bg-primary' : ''}
                 `
               } key={index}
               onClick={() =>{ setSelectedOption(option)
