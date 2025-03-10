@@ -9,6 +9,7 @@ import { eq } from "drizzle-orm";
 import { inngest } from "./client";
 import {
   generateNotesAiModel,
+  GenerateQuizAimodel,
   GenerateStudyTypeContentAiModel,
 } from "@/config/AiModel";
 
@@ -104,7 +105,7 @@ export const GenerateNotes = inngest.createFunction(
         }
         return { message: "Notes Generated" };
       } catch (error) {
-        console.log(error.message);
+        console.log("Error generating notes:", error.message);
         // return { error: error.message };
       }
     });
@@ -142,15 +143,16 @@ export const GenerateStudyTypeContent = inngest.createFunction(
     //Get event data
     const { studyType, prompt, courseId, recordId } = event.data;
 
-    const flashCardResult = await step.run(
+    const AiResult = await step.run(
       "Generate flash card using AI ",
       async () => {
         try {
-          const result = await GenerateStudyTypeContentAiModel.sendMessage(
-            prompt
-          );
-          const AiResult = JSON.parse(result.response.text());
-          return AiResult;
+          const result = 
+          studyType === "FlashCard"?
+          await GenerateStudyTypeContentAiModel.sendMessage(prompt):
+          await GenerateQuizAimodel.sendMessage(prompt);
+          const AIResult = JSON.parse(result.response.text());
+          return AIResult;
         } catch (error) {
           console.log(error.message);
         }
@@ -160,15 +162,14 @@ export const GenerateStudyTypeContent = inngest.createFunction(
 
     try {
       const dbReult = await step.run("Save the result to DB", async () => {
-        const result = await db
-          .update(studyContentTypeTable)
+        const result = await db.update(studyContentTypeTable)
           .set({
-            content: flashCardResult,
+            content: AiResult,
             status: "Ready",
           })
           .where(eq(studyContentTypeTable.id, recordId));
 
-        return { message: "success" };
+        return { message: "success", result: result };
       });
     } catch (error) {
       console.log(error.message);

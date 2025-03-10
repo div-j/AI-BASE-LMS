@@ -1,34 +1,32 @@
 "use client"
-import React, { useState } from 'react'
+import React from 'react'
 
-export default function QuizCard({ quiz, userSelectedOption }) {
-  const [selectedOption, setSelectedOption] = useState(null);
+export default function QuizCard({quiz, userSelectedOption}) {
+const  [selectedOption, setSelectedOption] = React.useState(null);
 
-  if (!quiz) {
-    return <div>No quiz data available</div>;
-  }
-
-  const handleOptionClick = (option) => {
-    setSelectedOption(option);
-    userSelectedOption(option);
-  };
 
   return (
-    <div className="p-4 bg-white border rounded-lg shadow-md">
-      <h3 className="font-bold text-xl mb-4">{quiz.question}</h3>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        {quiz.options.map((option, index) => (
-          <button
-            key={index}
-            onClick={() => handleOptionClick(option)}
-            className={`p-2 h-20 rounded-lg hover:bg-gray-300 ${
-              selectedOption === option ? 'bg-blue-500 text-white' : 'bg-gray-200'
-            }`}
-          >
-            {option}
-          </button>
-        ))}
-      </div>
+    <div className='mt-10 p-5'>
+        <h2 className='font-medium text-3xl text-center'>{quiz?.question}</h2>
+        <div className="grid grid-cols-2 gap-5 mt-5">
+          {
+            quiz?.options.map((option, index) => (
+              <h2 className={`font-medium text-lg text-center w-full rounded-full border p-3 hover:bg-gray-200 cursor-pointer
+               
+                ${selectedOption === option ? 'bg-primary text-whit hover:bg-primary' : ''}
+                `
+              } key={index}
+              onClick={() =>{ setSelectedOption(option)
+                userSelectedOption(option)
+              }}
+              >
+                {option}
+              </h2>
+            ))
+          }
+            
+        </div>
+      
     </div>
-  );
+  )
 }

@@ -27,13 +27,15 @@ export default function MaterialCard({ item, studyTypeContent, course, refreshDa
     // console.log(result);
   }
 
+  const isContentEmpty = !studyTypeContent?.[item.type] || studyTypeContent?.[item.type]?.length === 0;
+
   return (
     <div
       className={`p-5 bg-white border rounded-lg shadow-md flex flex-col items-center justify-center
-    ${studyTypeContent?.[item.type]?.length == null && "grayscale"}
+    ${isContentEmpty && "grayscale"}
     `}
     >
-      {studyTypeContent?.[item.type]?.length == null ? (
+      {isContentEmpty ? (
         <h2 className="p-1 px-2 bg-gray-500 text-white rounded-full text-[10px] mb-2">
           Generate
         </h2>
@@ -47,7 +49,7 @@ export default function MaterialCard({ item, studyTypeContent, course, refreshDa
       <p className="text-center mt-3 line-clamp-2 text-gray-500 text-sm ">
         {item.desc}
       </p>
-      {studyTypeContent?.[item.type]?.length == null ? (
+      {isContentEmpty ? (
         <Button onClick={() => generateContent()} className="mt-3 w-full" variant="outline">
           {loading && <RefreshCcw className='animate-spin' />}
           Generate

@@ -18,7 +18,7 @@ export async function POST(req) {
       }
 
       const contentList = await db.select().from(studyContentTypeTable)
-        .where(eq(studyContentTypeTable.courseId, courseId));
+        .where(eq(studyContentTypeTable?.courseId, courseId));
 
       const result = {
         notes: notes,
@@ -31,7 +31,7 @@ export async function POST(req) {
 
     } else if (studyType === 'notes') {
       const notes = await db.select().from(NotechaptersTable)
-        .where(eq(NotechaptersTable.courseId, courseId));
+        .where(eq(NotechaptersTable?.courseId, courseId));
 
       if (notes.length === 0) {
         console.log("No notes found for courseId:", courseId); // Log if no notes are found
@@ -40,7 +40,7 @@ export async function POST(req) {
       return NextResponse.json(notes);
     } else {
       const result = await db.select().from(studyContentTypeTable)
-        .where(and(eq(studyContentTypeTable.courseId, courseId),
+        .where(and(eq(studyContentTypeTable?.courseId, courseId),
           eq(studyContentTypeTable.type, studyType)));
 
       if (result.length === 0) {
