@@ -34,7 +34,7 @@ export default function StudyMaterialSection({courseId, course}) {
             name:'Question/Answer',
             desc:'Help to practice your learning',
             icon:'/qa.png',
-            path:'/qa',
+            path:'/quiz',
             type:'qa'
 
         },
