@@ -151,7 +151,9 @@ export const GenerateStudyTypeContent = inngest.createFunction(
         } else {
           throw new Error("Invalid study type");
         }
-        return JSON.parse(result.response.text());
+        const responseText = await result.response.text();
+        console.log("AI Response:", responseText); // Log the AI response
+        return JSON.parse(responseText);
       } catch (error) {
         console.error("Error generating content:", error.message);
         throw error;
@@ -168,6 +170,7 @@ export const GenerateStudyTypeContent = inngest.createFunction(
             status: "Ready",
           })
           .where(eq(studyContentTypeTable.id, recordId));
+        console.log("Content saved to DB:", AiResult); // Log the saved content
         return { message: "success" };
       });
     } catch (error) {

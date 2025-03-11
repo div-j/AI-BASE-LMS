@@ -22,9 +22,9 @@ export async function POST(req) {
 
       const result = {
         notes: notes,
-        flashcard: contentList?.find(item => item?.type === "Flashcards")?.content || [],
-        quiz: contentList?.find(item => item?.type === "Quiz")?.content || [],
-        qa: contentList?.find(item => item?.type === "Quiz")?.content || []
+        flashcard: contentList?.find(item => item?.type === "flashcards")?.content || [],
+        quiz: contentList?.find(item => item?.type === "quiz")?.content || [],
+        qa: contentList?.find(item => item?.type === "quiz")?.content || []
       };
 
       return NextResponse.json(result);
@@ -47,6 +47,7 @@ export async function POST(req) {
         console.log("No content found for courseId:", courseId); // Log if no content is found
       }
 
+      console.log("Returning content:", result[0]?.content); // Log the content being returned
       return NextResponse.json(result[0]?.content || []);
     }
 

@@ -29,11 +29,11 @@ export default function FlashCard() {
       console.log("Requesting flashcards for courseId:", courseId); // Log the courseId
       const result = await axios.post("/api/study-type", {
         courseId,
-        studyType: "Flashcards",
+        studyType: "flashcards",
       });
       console.log("API Response:", result?.data); // Log the response
       const data = result?.data;
-      if (data) {
+      if (data && Array.isArray(data)) {
         setFlashcards(data); // Use the `questions` array
       } else {
         console.error("Expected an array of questions but got:", data);

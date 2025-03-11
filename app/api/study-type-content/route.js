@@ -11,21 +11,21 @@ export async function POST(req) {
       return NextResponse.json({ error: 'courseId is required' }, { status: 400 });
     }
 
-    const PROMPT = type === "Flashcards"
+    const PROMPT = type.toLowerCase() === "flashcards"
       ? `Generate the flashcard on topic: ${chapters} in JSON format with front-back content, maximum 15.`
       : `Generate Quiz on topic ${chapters} with Questions and Options along with correct answer in JSON format max(10).`;
 
     const result = await db.insert(studyContentTypeTable).values({
       courseId: courseId,
-      type: type,
+      type: type.toLowerCase(),
       status: "Generating"
     }).returning({ id: studyContentTypeTable.id });
 
     // Trigger inngest function
-   await inngest.send({
+    await inngest.send({
       name: 'studyType.content',
       data: {
-        studyType: type,
+        studyType: type.toLowerCase(),
         prompt: PROMPT,
         courseId: courseId,
         recordId: result[0].id
