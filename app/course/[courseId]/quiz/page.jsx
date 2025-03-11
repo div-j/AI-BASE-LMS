@@ -16,15 +16,18 @@ export default function Quiz() {
   const [answer, setAnswer] = useState(null);
 
   async function GetstudyMaterial() {
-    const result = await axios.post('/api/study-type', {
-      courseId: courseId,
-      studyType: "quiz"
-    });
+    try {
+      const result = await axios.post('/api/study-type', {
+        courseId: courseId,
+        studyType: "quiz"
+      });
 
-    setQuizData(result?.data);
-    setQuizQuestions(result?.data?.questions || []);
-    console.log("Quiz ", quizQuestions);
-
+      setQuizData(result?.data);
+      setQuizQuestions(result?.data?.questions || []);
+      console.log("Quiz ", result?.data?.questions);
+    } catch (error) {
+      console.error("Error fetching quiz data:", error);
+    }
   }
 
   const checkAnswer = (userAnswer, currentQuestion) => {
@@ -38,7 +41,9 @@ export default function Quiz() {
   }
 
   useEffect(() => {
-    GetstudyMaterial();
+    if (courseId) {
+      GetstudyMaterial();
+    }
   }, [courseId]);
 
   useEffect(() => {
@@ -48,7 +53,7 @@ export default function Quiz() {
 
   if (!quizData) {
     return <div className='flex items-center h-screen justify-center'>
-      <LoaderPinwheel className='animate-spin'  size={24} />
+      <LoaderPinwheel className='animate-spin' size={24} />
     </div>;
   }
 

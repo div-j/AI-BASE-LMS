@@ -26,15 +26,14 @@ export default function FlashCard() {
   const getFlashCards = async () => {
     try {
       setLoading(true);
-      console.log("Requesting flashcards for courseId:", courseId); // Log the courseId
       const result = await axios.post("/api/study-type", {
         courseId,
-        studyType: "flashcards",
+        studyType: "flashcard",
       });
       console.log("API Response:", result?.data); // Log the response
       const data = result?.data;
-      if (data && Array.isArray(data)) {
-        setFlashcards(data); // Use the `questions` array
+      if (data && Array.isArray(data.questions)) {
+        setFlashcards(data.questions); // Use the `questions` array
       } else {
         console.error("Expected an array of questions but got:", data);
         setFlashcards([]); // Fallback to an empty array
@@ -55,8 +54,8 @@ export default function FlashCard() {
       return;
     }
     api.on("select", (index) => {
-      setCount(index); // Update the count state
-      setIsFlipped(false); // Reset the flip state
+      setCount(index);
+      setIsFlipped(false);
     });
   }, [api]);
 

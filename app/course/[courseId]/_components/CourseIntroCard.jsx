@@ -3,7 +3,7 @@ import { Progress } from "@/components/ui/progress";
 
 export default function CourseIntroCard({ course }) {
   return (
-    <section className="flex items-center gap-5 border shadow-md rounded-lg p-10 mt-5">
+    <section className="flex flex-col sm:flex-row items-center gap-5 border shadow-md rounded-lg p-10 mt-5">
       <Image src={"/knowledge.png"} alt="other" width={70} height={70} />
       <div>
         <h2 className="font-bold text-2xl">{course?.courseLayout?.course_name}</h2>

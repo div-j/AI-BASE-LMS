@@ -10,15 +10,13 @@ export default function DashboardLayout({children}) {
   return (
     <CourseCountContext.Provider value={{totalCourse, setTotalCourse}}>
 
-    <div>
-        <section className='md:w-64 md:block fixed'>
+    <div className="flex h-screen">
+        <section className=''>
             <SideBar/>
         </section>
-        <section className='md:ml-64'>
-            <Header/>
-            <main className='p-10'>
-                {children}
-            </main>
+        <section className="flex-1 overflow-y-auto ">
+          <Header />
+          <main className="p-5 md:p-10">{children}</main>
         </section>
     </div>
     </CourseCountContext.Provider>

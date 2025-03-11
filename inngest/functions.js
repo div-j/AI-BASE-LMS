@@ -152,7 +152,6 @@ export const GenerateStudyTypeContent = inngest.createFunction(
           throw new Error("Invalid study type");
         }
         const responseText = await result.response.text();
-        console.log("AI Response:", responseText); // Log the AI response
         return JSON.parse(responseText);
       } catch (error) {
         console.error("Error generating content:", error.message);

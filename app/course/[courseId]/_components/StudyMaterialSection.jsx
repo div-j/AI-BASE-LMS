@@ -57,7 +57,7 @@ export default function StudyMaterialSection({courseId, course}) {
   return (
     <div className='mt-5'>
         <h2 className='font-medium text-xl'>Study Material</h2>
-        <div className='grid grid-cols-2 md:grid-cols-5 gap-5 mt-3'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-5 mt-3'>
             {materialList.map((item,index)=>(
 
                 <Link href={`/course/${courseId}${item.path}`} key={index}>
