@@ -9,7 +9,7 @@ import { LoaderPinwheel } from 'lucide-react';
 
 export default function Quiz() {
   const { courseId } = useParams();
-  const [quizData, setQuizData] = useState(null);
+  const [quizData, setQuizData] = useState([]);
   const [quizQuestions, setQuizQuestions] = useState([]);
   const [step, setStep] = useState(0);
   const [isCorrectAnswer, setIsCorrectAnswer] = useState(null);
@@ -18,10 +18,9 @@ export default function Quiz() {
   async function GetstudyMaterial() {
     const result = await axios.post('/api/study-type', {
       courseId: courseId,
-      studyType: "Quiz"
+      studyType: "quiz"
     });
 
-    console.log("Quiz studymaterial", result);
     setQuizData(result?.data);
     setQuizQuestions(result?.data?.questions || []);
     console.log("Quiz ", quizQuestions);
